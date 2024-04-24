@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+  - name: "Java Backend Microservices"
+    folder: "Java Backend Microservices"
+    type: file
+    options:
+      path:
+        /var/lib/grafana/dashboards

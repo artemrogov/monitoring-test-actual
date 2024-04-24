@@ -41,7 +41,9 @@ services:
       - 3000:3000
     volumes:
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/dashboards/default.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ./grafana/dashboards/jvm-micrometer_rev9.json:/var/lib/grafana/dashboards/jvm-micrometer_rev9.json
+      - ./grafana/dashboards/12464_rev2.json:/var/lib/grafana/dashboards/12464_rev2.json
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
