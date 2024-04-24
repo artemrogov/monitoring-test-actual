@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+
+  prometheus:
+    container_name: prometheus
+    hostname: prometheus
+    image: prom/prometheus:v2.24.0
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    networks:
+      - cloud_test_app
+
+  node-exporter:
+    container_name: node_exporter
+    hostname: node_exporter
+    image: prom/node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+      - cloud_test_app
+
+  grafana:
+    container_name: grafana
+    hostname: grafana
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - cloud_test_app
+
+  app:
+    hostname: app
+    build:
+      context: .
+    image: app_java_test:latest
+    container_name: app
+    links:
+      - prometheus
+      - grafana
+    depends_on:
+      - prometheus
+      - grafana
+    environment:
+      SERVER_PORT_APP: ${SERVER_PORT_APP}
+    ports:
+      - ${SERVER_PORT_APP}:${SERVER_PORT_APP}
+    networks:
+      - cloud_test_app
+
+networks:
+    cloud_test_app:
+      driver: bridge
