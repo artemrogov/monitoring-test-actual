@@ -8,8 +8,7 @@ services:
     image: prom/prometheus:v2.24.0
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+    command: ["--config.file=/etc/prometheus/prometheus.yml","--storage.tsdb.retention.time=1d"]
     ports:
       - 9090:9090
     networks:
