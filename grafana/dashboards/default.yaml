@@ -6,4 +6,4 @@ providers:
     type: file
     options:
       path:
-        /var/lib/grafana/dashboards
+        /var/lib/grafana/dashboards/java
