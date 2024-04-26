@@ -43,6 +43,7 @@ services:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/dashboards/java:/var/lib/grafana/dashboards/java
       - ./grafana/dashboards/hosts:/var/lib/grafana/dashboards/hosts
+      - ./grafana/dashboards/golang:/var/lib/grafana/dashboards/golang
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
